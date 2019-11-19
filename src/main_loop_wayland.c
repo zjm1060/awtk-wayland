@@ -1,14 +1,14 @@
 /*
  * main_loop_wayland.1.c
  *
- *  Created on: 2019Äê11ÔÂ18ÈÕ
+ *  Created on: 2019ï¿½ï¿½11ï¿½ï¿½18ï¿½ï¿½
  *      Author: zjm09
  */
 #include <poll.h>
 #include "main_loop/main_loop_simple.h"
 #include "tkc/thread.h"
 
-#include "../awtk-wayland/lcd_wayland.h"
+#include "lcd_wayland.h"
 
 static void *wayland_run(void* ctx);
 

@@ -1,15 +1,15 @@
 /*
  * lcd_wayland.h
  *
- *  Created on: 2019Äê11ÔÂ18ÈÕ
+ *  Created on: 2019ï¿½ï¿½11ï¿½ï¿½18ï¿½ï¿½
  *      Author: zjm09
  */
 
 #ifndef UI_AWTK_WAYLAND_LCD_WAYLAND_H_
 #define UI_AWTK_WAYLAND_LCD_WAYLAND_H_
 
-#include "../awtk-wayland/pthread_signal.h"
-#include "../awtk-wayland/wayland_tools.h"
+#include "pthread_signal.h"
+#include "wayland_tools.h"
 #include "tkc/mem.h"
 #include "base/lcd.h"
 #include "lcd/lcd_mem_bgr565.h"

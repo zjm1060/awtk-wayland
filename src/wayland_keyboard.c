@@ -1,10 +1,10 @@
 /*
  * wayland_keyboard.c
  *
- *  Created on: 2019Äê9ÔÂ23ÈÕ
+ *  Created on: 2019ï¿½ï¿½9ï¿½ï¿½23ï¿½ï¿½
  *      Author: zjm09
  */
-#include "../awtk-wayland/wayland_tools.h"
+#include "wayland_tools.h"
 
 void
 keymap_format_cb (void *data, struct wl_keyboard *keyboard, uint32_t format,

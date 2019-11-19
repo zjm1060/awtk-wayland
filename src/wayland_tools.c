@@ -1,10 +1,10 @@
 /*
  * wayland_tools.c
  *
- *  Created on: 2019Äê9ÔÂ23ÈÕ
+ *  Created on: 2019ï¿½ï¿½9ï¿½ï¿½23ï¿½ï¿½
  *      Author: zjm09
  */
-#include "../awtk-wayland/wayland_tools.h"
+#include "wayland_tools.h"
 
 static void output_mode_cb(void *data, struct wl_output *out, uint32_t flags,
 		int32_t width, int32_t height, int32_t refresh_rate) {

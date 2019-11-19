@@ -1,3 +1,27 @@
 awtk在Wayland上的移植
 
-在stm32mp1上验证通过
+在stm32mp1,raspberry pi 4上验证通过
+无X11，SDL等依赖
+
+
+raspberry pi 4
+
+环境配置
+```
+sudo apt update
+sudo apt install weston
+sudo apt install libxkbcommon-dev
+sudo apt install libwayland-dev
+```
+编译
+```
+git clone https://github.com/zlgopen/awtk.git
+cd awtk
+git checkout -b 1.2 remotes/origin/1.2
+cd ..
+git clone https://github.com/zjm1060/awtk-wayland.git
+cd awtk-wayland
+scons -j4
+weston-launch
+~/build/bin/demoui
+```

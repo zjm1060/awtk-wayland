@@ -1,0 +1,13 @@
+import os
+import copy
+
+BIN_DIR = os.environ['BIN_DIR'];
+LIB_DIR = os.environ['LIB_DIR'];
+env = DefaultEnvironment().Clone()
+
+sources = ['input_dispatch.c', 'wayland_keyboard.c', 'lcd_wayland.c', 'wayland_tools.c', 'main_loop_wayland.c', 'xdg-shell-unstable-v6-client-protocol.c']
+
+env.Library(os.path.join(LIB_DIR, 'awtk_wayland'), sources)
+
+env['LIBS'] = ['awtk_wayland'] + env['LIBS']
+

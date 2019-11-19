@@ -1,7 +1,7 @@
 /*
  * wayland_tools.h
  *
- *  Created on: 2019Äê9ÔÂ23ÈÕ
+ *  Created on: 2019ï¿½ï¿½9ï¿½ï¿½23ï¿½ï¿½
  *      Author: zjm09
  */
 
@@ -24,8 +24,8 @@
 #include <wayland-cursor.h>
 #include <xkbcommon/xkbcommon.h>
 
-#include "../awtk-wayland/pthread_signal.h"
-#include "../awtk-wayland/xdg-shell-unstable-v6-client-protocol.h"
+#include "pthread_signal.h"
+#include "xdg-shell-unstable-v6-client-protocol.h"
 
 #define container_of(ptr, type, member) ({                      \
         const typeof( ((type *)0)->member ) *__mptr = (ptr);    \

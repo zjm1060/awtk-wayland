@@ -1,10 +1,10 @@
 /*
  * lcd_wayland_1.c
  *
- *  Created on: 2019Äê11ÔÂ18ÈÕ
+ *  Created on: 2019ï¿½ï¿½11ï¿½ï¿½18ï¿½ï¿½
  *      Author: zjm09
  */
-#include "../awtk-wayland/lcd_wayland.h"
+#include "lcd_wayland.h"
 
 #include "base/idle.h"
 #include "base/timer.h"
@@ -187,7 +187,7 @@ static void kb_repeat(struct wayland_data *objs)
 lcd_t *lcd_wayland_create(void)
 {
 	lcd_wayland_t *lw = calloc(1,sizeof(lcd_wayland_t));
-	if (lw && setup_wayland (&lw->objs,1) != SETUP_OK){
+	if (lw && setup_wayland (&lw->objs,0) != SETUP_OK){
 		destroy_wayland_data (&lw->objs);
 		return NULL;
 	}
