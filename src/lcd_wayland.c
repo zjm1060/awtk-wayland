@@ -80,6 +80,7 @@ static void mouse_point_dispatch(int state,int button, int x,int y)
 	pointer_event_t event;
 	widget_t* widget = main_loop()->wm;
 	static int __x,__y;
+	static int pressed = 0;
 
 	if(x > 0){
 		__x = x;
@@ -93,17 +94,17 @@ static void mouse_point_dispatch(int state,int button, int x,int y)
 		case WL_POINTER_BUTTON_STATE_PRESSED:
 			pointer_event_init(&event, EVT_POINTER_DOWN, widget, __x, __y);
 			event.button = button;
-			event.pressed = 1;
+			event.pressed = pressed = 1;
 			break;
 		case WL_POINTER_BUTTON_STATE_RELEASED:
 			pointer_event_init(&event, EVT_POINTER_UP, widget, __x, __y);
 			event.button = button;
-			event.pressed = 0;
+			event.pressed = pressed = 0;
 			break;
 		default:
 			pointer_event_init(&event, EVT_POINTER_MOVE, widget, __x, __y);
 			event.button = button;
-			event.pressed = 0;
+			event.pressed = pressed;
 			break;
 	}
 
@@ -187,7 +188,7 @@ static void kb_repeat(struct wayland_data *objs)
 lcd_t *lcd_wayland_create(void)
 {
 	lcd_wayland_t *lw = calloc(1,sizeof(lcd_wayland_t));
-	if (lw && setup_wayland (&lw->objs,0) != SETUP_OK){
+	if (lw && setup_wayland (&lw->objs,1) != SETUP_OK){
 		destroy_wayland_data (&lw->objs);
 		return NULL;
 	}
