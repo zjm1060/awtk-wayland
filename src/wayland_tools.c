@@ -9,9 +9,11 @@
 static void output_mode_cb(void *data, struct wl_output *out, uint32_t flags,
 		int32_t width, int32_t height, int32_t refresh_rate) {
 	struct output_info *info = data;
-	info->width = width;
-	info->height = height;
-	info->hertz = refresh_rate;
+	if(flags & WL_OUTPUT_MODE_CURRENT){
+		info->width = width;
+		info->height = height;
+		info->hertz = refresh_rate;
+	}
 }
 
 static void output_geometry_cb(void *data, struct wl_output *wl_output,
