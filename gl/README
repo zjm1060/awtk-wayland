@@ -1,0 +1,10 @@
+## awtk在Wayland上的移植,openGL加速
+
+  * 在stm32mp157上验证通过
+  * 依赖xkbcommon,wayland
+  * 需要GPU支持,系统需要安装GPU驱动及用户空间程序
+
+## 已知问题
+  * 157的gpu性能较弱，GPU使用率偏高
+  * awtk/3rd/nanovg/base/stb_truetype.h 需要替换成最新版，否则可能无法正确加载部分字体文件
+  * 未在其它平台测试，不保证兼容性
