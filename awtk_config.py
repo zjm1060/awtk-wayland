@@ -20,8 +20,8 @@ LIB_DIR          = joinPath(BUILD_DIR, 'lib')
 VAR_DIR          = joinPath(BUILD_DIR, 'var')
 TK_DEMO_ROOT     = joinPath(TK_ROOT, 'demos')
 
-LCD='LINUX_FB'
-INPUT_ENGINE='pinyin'
+LCD='FB_GL'
+INPUT_ENGINE='null'
 NANOVG_BACKEND='AGGE'
 #NANOVG_BACKEND='GLES2'
 #BOARD_PLATFORM= 'x1830'
@@ -42,16 +42,14 @@ OS_CPPPATH=[]
 OS_LINKFLAGS=''
 OS_SUBSYSTEM_CONSOLE=''
 OS_SUBSYSTEM_WINDOWS=''
-OS_FLAGS='-g -Wall -Os '
+OS_SYSROOT='--sysroot="Z:\\home\\user\\work\\stm32mp1\\stm32mp1-openstlinux-4.19-thud-mp1-19-02-20\\build-openstlinuxweston-stm32mp1\\tmp-glibc\\sysroots\\stm32mp1" '
+OS_FLAGS='-g -Wall -Os -mcpu=cortex-a7 -mthumb -mlittle-endian -mfloat-abi=hard -mfpu=neon-vfpv4 '
 #OS_FLAGS='-g -Wall -Os -mfloat-abi=hard '
-
-#for build tslib
-TOOLS_PREFIX=''
 
 #for prebuild tslib
 #TSLIB_LIB_DIR='/opt/28x/tslib/lib'
 #TSLIB_INC_DIR='/opt/28x/tslib/include'
-#TOOLS_PREFIX='/opt/poky/1.7/sysroots/x86_64-pokysdk-linux/usr/bin/arm-poky-linux-gnueabi/arm-poky-linux-gnueabi-'
+TOOLS_PREFIX='arm-linux-gnueabihf-'
 
 #for pc build
 #TOOLS_PREFIX=''
@@ -64,15 +62,15 @@ COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DLINUX -DHAS_PTHREAD -DWITH_LCD_LANDSCAPE'
 
 #NANOVG_BACKEND_LIBS=['nanovg-agge', 'nanovg', 'agge'];
 COMMON_CCFLAGS = COMMON_CCFLAGS + ' -DWITH_NANOVG_AGGE -DWITH_NANOVG_GL -DWITH_NANOVG_GLES2 -DWITH_NANOVG_GPU -DWL_EGL_PLATFORM -DNANOVG_GLES2'
-LIBS=['awtk', 'gpinyin', 'awtk_wayland', 'awtk', 'nanovg-agge', 'agge', 'nanovg', 'linebreak'];
+LIBS=['awtk', 'extwidgets', 'widgets', 'gpinyin', 'awtk_gl_wayland', 'base', 'gpinyin', 'tkc', 'nanovg-agge', 'agge', 'nanovg', 'linebreak','glad'];
 GRAPHIC_BUFFER="default"
 
 LIBS=LIBS + OS_LIBS
 
 CFLAGS=COMMON_CFLAGS
-LINKFLAGS=OS_LINKFLAGS;
+LINKFLAGS=OS_SYSROOT + OS_LINKFLAGS;
 LIBPATH=[LIB_DIR] + [OS_LIBPATH]
-CCFLAGS=OS_FLAGS + COMMON_CCFLAGS
+CCFLAGS=OS_SYSROOT + OS_FLAGS + COMMON_CCFLAGS
 
 CPPPATH=[TK_ROOT,
   TK_SRC,
@@ -88,7 +86,7 @@ CPPPATH=[TK_ROOT,
   ] + OS_CPPPATH
 
 os.environ['LCD'] = LCD
-os.environ['TARGET_ARCH'] = ''
+os.environ['TARGET_ARCH'] = 'arm'
 os.environ['BIN_DIR'] = BIN_DIR;
 os.environ['LIB_DIR'] = LIB_DIR;
 os.environ['TK_ROOT'] = TK_ROOT;
@@ -98,12 +96,17 @@ os.environ['INPUT_ENGINE'] = INPUT_ENGINE;
 os.environ['NANOVG_BACKEND'] = NANOVG_BACKEND;
 os.environ['TK_3RD_ROOT'] = TK_3RD_ROOT;
 os.environ['GTEST_ROOT'] = GTEST_ROOT;
-os.environ['NATIVE_WINDOW'] = '';
+os.environ['NATIVE_WINDOW'] = 'fb_gl';
 os.environ['GRAPHIC_BUFFER'] = GRAPHIC_BUFFER;
 os.environ['BOARD_PLATFORM'] = BOARD_PLATFORM;
+os.environ['OS_NAME'] = 'Linux';
+os.environ['TOOLS_NAME'] = '';
+os.environ['PLATFORM'] = 'Linux';
 
 CC=TOOLS_PREFIX+'gcc',
 CXX=TOOLS_PREFIX+'g++',
 LD=TOOLS_PREFIX+'g++',
 AR=TOOLS_PREFIX+'ar',
 STRIP=TOOLS_PREFIX+'strip',
+
+

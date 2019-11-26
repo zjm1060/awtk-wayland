@@ -3,7 +3,8 @@ import platform
 
 import awtk_config as awtk
 
-DefaultEnvironment(CCFLAGS = awtk.CCFLAGS,
+DefaultEnvironment(
+  CCFLAGS = awtk.CCFLAGS, 
   CFLAGS = awtk.CFLAGS,
   CC=awtk.TOOLS_PREFIX+'gcc',
   CXX=awtk.TOOLS_PREFIX+'g++',
@@ -15,7 +16,10 @@ DefaultEnvironment(CCFLAGS = awtk.CCFLAGS,
   CPPPATH = awtk.CPPPATH,
   LINKFLAGS = awtk.LINKFLAGS,
   OS_SUBSYSTEM_CONSOLE=awtk.OS_SUBSYSTEM_CONSOLE,
-  OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS
+  OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS,
+  OBJSUFFIX  = ".o",
+  TARGET_ARCH = "arm",
+  ENV = {'PATH' : os.environ['PATH']}
 )
 
 APP_ROOT=ARGUMENTS.get('APP', '')
@@ -31,12 +35,15 @@ else:
   VariantDir(APP_ROOT_VAR, APP_ROOT)
 
 SConscriptFiles=[
+  awtk.joinPath(TK_ROOT_VAR, '3rd/glad/SConscript'),
   awtk.joinPath(TK_ROOT_VAR, '3rd/nanovg/SConscript'),
-  awtk.joinPath(TK_ROOT_VAR, '3rd/agge/SConscript'),
-  awtk.joinPath(TK_ROOT_VAR, '3rd/gpinyin/SConscript'),
+  awtk.joinPath(TK_ROOT_VAR, '3rd/gpinyin/SConscript'), 
   awtk.joinPath(TK_ROOT_VAR, '3rd/libunibreak/SConscript'),
   awtk.joinPath(TK_ROOT_VAR, 'src/SConscript'),
-  'src/SConscript'
+  awtk.joinPath(TK_ROOT_VAR, 'tools/common/SConscript'), 
+  awtk.joinPath(TK_ROOT_VAR, 'tools/ui_gen/xml_to_ui/SConscript'),
+  'gl/src/SConscript',
   ] + APP_PROJ_VAR;
 
 SConscript(SConscriptFiles)
+

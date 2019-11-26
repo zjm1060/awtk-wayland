@@ -14,6 +14,7 @@ lua/demo1
 lua/lftk_run
 lib/*
 bin/*
+build/*
 tags
 .vscode
 .vs
