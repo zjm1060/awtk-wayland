@@ -81,7 +81,7 @@ void Init_GLES(lcd_wayland_t *lw)
   free(EglAllConfigs);
   EglContext = eglCreateContext(egldisplay, EglConfig, EGL_NO_CONTEXT, ContextAttributes);
 
-  eglNativeWindow = (EGLNativeWindowType)wl_egl_window_create(lw->objs.surface, 800, 480);
+  eglNativeWindow = (EGLNativeWindowType)wl_egl_window_create(lw->objs.surface, lw->objs.width, lw->objs.height);
   assert(eglNativeWindow);
 
   eglsurface = eglCreateWindowSurface(egldisplay, EglConfig, eglNativeWindow, NULL);
@@ -97,7 +97,7 @@ void Init_GLES(lcd_wayland_t *lw)
   glDisable(GL_DEPTH_TEST);
   glDisable(GL_SCISSOR_TEST);
 
-  eglSwapInterval(egldisplay, 0);
+  eglSwapInterval(egldisplay, 60);
   assert(eglGetError() == EGL_SUCCESS);
 
 }

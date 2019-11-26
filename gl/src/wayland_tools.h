@@ -68,6 +68,7 @@ struct input_bundle
 
 struct wayland_data
 {
+  int width,height;
   struct wl_display *display;
   struct wl_registry *registry;
   struct wl_compositor *compositor;

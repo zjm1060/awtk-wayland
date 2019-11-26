@@ -218,6 +218,20 @@ lcd_wayland_t *lcd_wayland_create(void)
 	lw->objs.inputs.mouse.point_xcb = mouse_point_dispatch;
 	lw->objs.inputs.touch.point_xcb = mouse_point_dispatch;
 
+	{
+		struct wayland_data *objs = &lw->objs;
+		struct wayland_output *out = container_of ( objs->monitors->next,
+			  struct wayland_output,
+			  link);
+		lw->objs.width = out->info.width;
+		lw->objs.height = out->info.height;
+
+		if(out->info.transform == WL_OUTPUT_TRANSFORM_90 || out->info.transform ==WL_OUTPUT_TRANSFORM_270){
+			lw->objs.height = out->info.width;
+			lw->objs.width = out->info.height;
+		}
+	}
+
 //	return lcd_linux_create_flushable(lw);
 	return lw;
 }
