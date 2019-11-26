@@ -43,7 +43,7 @@ OS_LINKFLAGS=''
 OS_SUBSYSTEM_CONSOLE=''
 OS_SUBSYSTEM_WINDOWS=''
 OS_SYSROOT='--sysroot="Z:\\home\\user\\work\\stm32mp1\\stm32mp1-openstlinux-4.19-thud-mp1-19-02-20\\build-openstlinuxweston-stm32mp1\\tmp-glibc\\sysroots\\stm32mp1" '
-OS_FLAGS='-g -Wall -Os -mcpu=cortex-a7 -mthumb -mlittle-endian -mfloat-abi=hard -mfpu=neon-vfpv4 '
+OS_FLAGS='-g -Wall -O0 -g3 -mcpu=cortex-a7 -mthumb -mlittle-endian -mfloat-abi=hard -mfpu=neon-vfpv4 '
 #OS_FLAGS='-g -Wall -Os -mfloat-abi=hard '
 
 #for prebuild tslib
@@ -100,7 +100,7 @@ os.environ['NATIVE_WINDOW'] = 'fb_gl';
 os.environ['GRAPHIC_BUFFER'] = GRAPHIC_BUFFER;
 os.environ['BOARD_PLATFORM'] = BOARD_PLATFORM;
 os.environ['OS_NAME'] = 'Linux';
-os.environ['TOOLS_NAME'] = '';
+os.environ['TOOLS_NAME'] = 'mingw';
 os.environ['PLATFORM'] = 'Linux';
 
 CC=TOOLS_PREFIX+'gcc',

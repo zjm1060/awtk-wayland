@@ -18,6 +18,7 @@ DefaultEnvironment(
   OS_SUBSYSTEM_CONSOLE=awtk.OS_SUBSYSTEM_CONSOLE,
   OS_SUBSYSTEM_WINDOWS=awtk.OS_SUBSYSTEM_WINDOWS,
   OBJSUFFIX  = ".o",
+  PROGSUFFIX = "",
   TARGET_ARCH = "arm",
   ENV = {'PATH' : os.environ['PATH']}
 )
