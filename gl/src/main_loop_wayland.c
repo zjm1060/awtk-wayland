@@ -104,6 +104,14 @@ void Init_GLES(lcd_wayland_t *lw)
 
 static ret_t gles_swap_buffer(native_window_t* win) {
 
+//	uint64_t t = time_now_ms();
+//	static uint64_t old_t;
+//
+//	t = t - old_t;
+//	old_t = t;
+//
+//	printf("fps:%0.2f\n",1000/(t/1000.0));
+
 	//wl_surface_set_opaque_region(lw->objs.surface, NULL);
 
   eglSwapBuffers(egldisplay, eglsurface);

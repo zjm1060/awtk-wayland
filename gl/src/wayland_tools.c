@@ -50,7 +50,7 @@ static void calc_capabilities(void *data, struct wl_seat *s, uint32_t cap)
 	// that selects the corresponding bit.
 	inputs->seat = s;
 	if (cap & WL_SEAT_CAPABILITY_KEYBOARD) {
-		printf("Has a keyboard.\n");
+//		printf("Has a keyboard.\n");
 		if(inputs->keyboard.kbd == NULL){
 			inputs->keyboard.kbd = wl_seat_get_keyboard(s);
 			wl_keyboard_add_listener(inputs->keyboard.kbd, &xkb_keyboard_listener,
@@ -59,7 +59,7 @@ static void calc_capabilities(void *data, struct wl_seat *s, uint32_t cap)
 	}
 
 	if (cap & WL_SEAT_CAPABILITY_POINTER) {
-		printf("Has a pointer.\n");
+//		printf("Has a pointer.\n");
 		inputs->mouse.pointer = wl_seat_get_pointer(s);
 		if(inputs->mouse.pointer ){
 //			struct wl_cursor_theme *cursor_theme = wl_cursor_theme_load(NULL, 1, objs->shm);
@@ -84,7 +84,7 @@ static void calc_capabilities(void *data, struct wl_seat *s, uint32_t cap)
 	}
 
 	if (cap & WL_SEAT_CAPABILITY_TOUCH){
-		printf("Has a touchscreen.\n");
+//		printf("Has a touchscreen.\n");
 		inputs->touch.pointer = wl_seat_get_touch(s);
 		if(inputs->touch.pointer ){
 			wl_touch_add_listener(inputs->touch.pointer, &toucher_listerner, &inputs->touch);
@@ -100,8 +100,8 @@ static const struct wl_seat_listener seat_listener = {
 static void global_registry_handler(void *data, struct wl_registry *registry,
 		uint32_t id, const char *interface, uint32_t version) {
 	struct wayland_data *objs = data;
-	printf("Got a registry event for %s id %d version %d \n", interface, id,
-			version);
+//	printf("Got a registry event for %s id %d version %d \n", interface, id,
+//			version);
 	if (strcmp(interface, wl_compositor_interface.name) == 0) {
 		objs->compositor = wl_registry_bind(registry, id,
 				&wl_compositor_interface, 4);
@@ -148,6 +148,8 @@ static const struct zxdg_toplevel_v6_listener xdg_top_listener = {
 		do_nothing
 };
 
+#define RETURN_WITH(s)	{printf("return with " #s "\n");return s;}
+
 WAYLAND_SETUP_ERR setup_wayland(struct wayland_data *objs, int fullscreen) {
 	memset(objs, 0, sizeof(struct wayland_data));
 	objs->monitors = malloc(sizeof(struct wl_list));
@@ -157,40 +159,40 @@ WAYLAND_SETUP_ERR setup_wayland(struct wayland_data *objs, int fullscreen) {
 	objs->inputs.keyboard.ctx = xkb_context_new(XKB_CONTEXT_NO_FLAGS);
 
 
-	objs->display = wl_display_connect(NULL);
+	objs->display = wl_display_connect("wayland-0");
 	if (objs->display == NULL)
-		return NO_WAY_DISP;
+		RETURN_WITH (NO_WAY_DISP);
 
 	objs->registry = wl_display_get_registry(objs->display);
 	if (objs->registry == NULL)
-		return NO_REG;
+		RETURN_WITH (NO_REG);
 	wl_registry_add_listener(objs->registry, &registry_listener, objs);
 	wl_display_roundtrip(objs->display); // Wait for registry listener to run
 	if (objs->compositor == NULL)
-		return NO_COMP;
+		RETURN_WITH (NO_COMP);
 	if (objs->shell == NULL)
-		return NO_SHELL;
+		RETURN_WITH (NO_SHELL);
 	if (objs->inputs.seat == NULL)
-		return NO_SEAT;
+		RETURN_WITH (NO_SEAT);
 	if (objs->shm == NULL)
-		return NO_SHM;
+		RETURN_WITH (NO_SHM);
 	objs->inputs.mouse.cursor_theme = wl_cursor_theme_load(NULL, 1, objs->shm);
 	if (wl_list_empty(objs->monitors))
-		return NO_MONITORS;
+		RETURN_WITH (NO_MONITORS);
 	if (objs->surface == NULL)
-		return NO_SURFACE;
+		RETURN_WITH (NO_SURFACE);
 
 	objs->shell_surface = zxdg_shell_v6_get_xdg_surface(objs->shell,
 			objs->surface);
 	if (objs->shell_surface == NULL)
-		return NO_SHELL_SURFACE;
+		RETURN_WITH (NO_SHELL_SURFACE);
 
 	zxdg_surface_v6_add_listener(objs->shell_surface, &xdg_surface_listener,
 	NULL);
 
 	objs->top = zxdg_surface_v6_get_toplevel(objs->shell_surface);
 	if (objs->top == NULL)
-		return NO_TOPLEVEL;
+		RETURN_WITH (NO_TOPLEVEL);
 
 	if (fullscreen) {
 		zxdg_toplevel_v6_set_maximized(objs->top);
@@ -226,21 +228,28 @@ void destroy_wayland_data(struct wayland_data *objs) {
 	xkb_keymap_unref(objs->inputs.keyboard.map);
 	xkb_state_unref(objs->inputs.keyboard.kb_state);
 	xkb_context_unref(objs->inputs.keyboard.ctx);
-	wl_keyboard_destroy(objs->inputs.keyboard.kbd);
-
-//  free (objs->inputs.keyboard.pressed.data);
-//  free (objs->inputs.keyboard.pressed.valid);
-
-	wl_pointer_destroy(objs->inputs.mouse.pointer);
-	wl_seat_destroy(objs->inputs.seat);
-	wl_shm_destroy(objs->shm);
-	zxdg_toplevel_v6_destroy(objs->top);
-	zxdg_surface_v6_destroy(objs->shell_surface);
-	zxdg_shell_v6_destroy(objs->shell);
-	wl_surface_destroy(objs->surface);
-	wl_compositor_destroy(objs->compositor);
-	wl_registry_destroy(objs->registry);
-	wl_display_disconnect(objs->display);
+	if(objs->inputs.keyboard.kbd)
+		wl_keyboard_destroy(objs->inputs.keyboard.kbd);
+	if(objs->inputs.mouse.pointer)
+		wl_pointer_destroy(objs->inputs.mouse.pointer);
+	if(objs->inputs.seat)
+		wl_seat_destroy(objs->inputs.seat);
+	if(objs->shm)
+		wl_shm_destroy(objs->shm);
+	if(objs->top)
+		zxdg_toplevel_v6_destroy(objs->top);
+	if(objs->shell_surface)
+		zxdg_surface_v6_destroy(objs->shell_surface);
+	if(objs->shell)
+		zxdg_shell_v6_destroy(objs->shell);
+	if(objs->surface)
+		wl_surface_destroy(objs->surface);
+	if(objs->compositor)
+		wl_compositor_destroy(objs->compositor);
+	if(objs->registry)
+		wl_registry_destroy(objs->registry);
+	if(objs->display)
+		wl_display_disconnect(objs->display);
 }
 
 static void buffer_release_cb(void *data, struct wl_buffer *buf) {
